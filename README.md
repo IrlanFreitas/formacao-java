@@ -37,17 +37,17 @@ Futuramente será descrito todos os cursos e passo-a-passo do que está sendo fe
 
 ## 3. Servlets e Maven
 
-- [ ] **Servlets: Fundamentos da Web**
+- [x] **Servlets: Fundamentos da Web**
 - [ ] Receba notificações da api de Servlet via Listeners
 - [ ] **Maven: Build do zero a web**
  
 
 ## 4. Banco de Dados
 
-- [ ] **Java e JPA: Persista seus objetos com JPA2 e Hibernate**
+- [x] **Java e JPA: Persista seus objetos com JPA2 e Hibernate**
 - [ ] Entidades Managed, Transient e Detached no Hibernate e JPA
 - [ ] JPA com Hibernate: Herança e Mapeamentos
-- [ ] **Java e JPA: Otimizações com JPA2 e Hibernate**
+- [x] **Java e JPA: Otimizações com JPA2 e Hibernate**
 - [ ] Entendendo o Lazy e o Eaged Load da JPA
 - [ ] Os 7 hábitos dos desenvolvedores Hibernate e JPA altamente eficazes 
 
