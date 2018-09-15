@@ -1,0 +1,275 @@
+Falta melhorar o entendimento sobre relacionamento bidirecional, exemplo: {
+
+	@OneToMany em uma entidade
+	@ManyToOne( mappedBy = "categorias" ) em outra entidade.
+}
+
+N para N - @ManyToMany 
+
+Essa tabela é chamada de Tabela de Relacionamento ou tabela associativa. 
+O único objetivo é relacionar registros de uma tabela com os registros da outra. 
+Essa é a tabela que será gerada pelo Hibernate para representar nosso mapeamento de "muitos para muitos". 
+Pela convenção, a tabela será chamada de Produto_Categoria, ou seja, seguindo a fórmula: 
+"nome da classe que contém o relacionamento" + "o nome da classe que foi associada". 
+É interessante notar que, mais uma vez, em nenhum momento vamos precisar fazer referência a 
+essas tabelas que foram criadas. Sempre trabalharemos baseado nos nossos objetos!
+
+
+Reticências nos parâmetros de um método - Chamado de Varargs ou Ellipsis {
+
+	Utilizado no método adicionaCategorias da entidade Produto e chamado na classe CriadorDeProdutos
+	Ref: https://pt.stackoverflow.com/questions/46174/o-que-significam-as-retic%C3%AAncias-nos-par%C3%A2metros-de-um-m%C3%A9todo
+}
+
+Problema com o entendimento de cardinalidade.
+
+Entendo o uso do @JoinTable {
+	
+	Good ref: https://www.youtube.com/watch?time_continue=4&v=6LqBB2cV28Y
+	
+	@ManyToMany
+	@JoinTable( name = "Teste_Nome_Tabela_Associacao",
+				joinColumns = @JoinColumn( name = "produto_id" ), 
+				inverseJoinColumns = @JoinColumn ( name = "categoria_id") )
+	private List<Categoria> categorias = new ArrayList<>();
+	
+	entendendo o que foi colocado no JoinTable
+	name = define o nome da tabela de associação ou tabela de relacionamento
+	joinColumns = define o nome da coluna de join do ponto que está, seria a entidade que está agora.
+	inverseJoinColumns = define o ponto inverso, da classe que também faz o join.
+	
+	Mas ainda não sei quando deve ser utilizada, o que previne e para que serve.
+	
+}
+
+
+Pesquisar sobre o CriteriaAPI e os conceitos relacionados
+
+
+Entender esse pedaço de código: 
+	criteriaQuery.where( (Predicate[]) predicates.toArray(new Predicate[0]) );
+	
+	Principalmente o new Predicate[0]
+	
+	System.out.println((Predicate[]) predicates.toArray()); //Erro de casting! - Testar
+	System.out.println((Predicate[]) predicates.toArray(new Predicate[0]));
+	
+	
+Resumo alura:
+
+O CriteriaBuilder possui métodos que definem operações da busca, como, por exemplo:
+
+equal(), greaterThan(), lesserThan(), like() ...
+sum(), max(), min(), avg(), count(), desc(), distinct() ...
+
+Resumindo, encontramos os seguintes métodos na interface CriteriaQuery:
+
+select
+from
+where
+orderBy
+groupBy
+having
+
+Predicates são objetos que representam filtros na busca!
+
+
+Ler sobre: https://pt.stackoverflow.com/questions/185255/jpa-hibernate-eu-entendi-as-conjuncoes-e-disjuncoes-%C3%89-isso-mesmo
+
+
+Uma forma de fazer criterias menos verbosamente :
+https://github.com/uaihebert/uaicriteria
+
+Pattern: OpenEntityManagerInView:
+
+O padrão Open EntityManagerInView
+
+Podemos utilizar um componente que intercepte a requisição e que abra o EntityManager no início e o feche no final. 
+Nesse caso, qual componente da especificação de Servlets poderemos usar? Um filtro, pois ele permite executar algo 
+antes do request e depois da resposta! E isso, é ideal para o cenário que precisamos começar, ou seja, o EntityManager 
+iniciado antes do request e fechado depois da resposta, após mostrar o JSP na tela
+
+Não simplemente abrir o entityManager no Dao e fecha-lo logo em seguida, seria como
+abrir para buscar os dados no Dao, por conta de ser Lazy, ele traz os dados aos
+poucos e quando chegar na view ainda está aberto, vai obtendo os dados
+e depois disso, dessa utilização, é fechado.
+
+@DynamicUpdate
+
+A anotação @DynamicUpdate permite que na query estejam apenas os campos que foram alterados. Nesse caso, a query do update será:
+
+update Produto set nome=? where id=?
+
+
+Pool de Conexões: 
+
+O que precisamos é encontrar um meio-termo entre: abrir uma conexão individual para cada cliente e apenas uma conexão para todos os clientes. 
+Assim, o ideal seria um número fixo de conexões abertas em algum lugar para que sejam compartilhadas e reaproveitados por todos os clientes. 
+A esse lugar daremos o nome de pool.
+
+O Hibernate já possui um pool nativo de conexões com o banco, que não deve ser usado em produção. 
+Existem diversas implementações no mercado além de servidores de Aplicação (JBoss WildFly) e Servlet Containers (Apache Tomcat) 
+que possuem implementações sofisticadas de pool de conexões. No nosso caso, vamos utilizar o C3P0 que é [indicado pela 
+própria documentação do Hibernate][1].
+
+C3p0 Documentação: http://www.mchange.com/projects/c3p0/
+
+
+Datasource
+
+Datasource isola as informações sobre acesso ao banco de dados. 
+Assim, ainda precisaremos manter as configurações sobre o usuário, senha, url e classe do Driver.
+
+Um pouco mais sobre o DataSource: http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/jdbc/datasource/DriverManagerDataSource.html
+
+
+Lock:
+
+Ilustrando o que é
+
+Para ilustrar melhor o problema imagine que nossa loja irá lançar uma promoção para os produtos de tecnologia, abaixando seus preços em 10%. 
+Um funcionário chamado Fábio vai até o site e realiza a alteração do preço do livro Arquitetura e Design de Software: Uma abordagem sobre a plataforma Java. 
+Enquanto isso, Rômulo, outro funcionário, resolve mexer no título do mesmo livro, deixando-o mais simples. Portanto, ele irá alterar o nome do livro para 
+Arquitetura e Design de Software.
+
+Pouco tempo depois de Fábio abrir a página de edição e começar a alteração do preço do livro, Rômulo abriu a mesma página para editar o mesmo livro e 
+alterar seu nome. Supondo que Fábio confirme a edição primeiro, quando Rômulo tentar editar o mesmo livro o que irá acontecer com o novo preço de Fábio? 
+Será perdido! Isso é o que chamamos de [Conflito escrita-escrita][1].
+
+Pessimista
+
+Essa solução tem como consequência um grande gargalo de escalabilidade, já que no momento em que travamos um registro os demais ficarão esperando a 
+liberação do mesmo para realizar a edição. Além disso, o banco de dados deve oferecer suporte ao lock (como já foi mencionado). Esse recurso deve ser 
+utilizado com muito cautela dentro de uma aplicação web e normalmente outras soluções são utilizadas.
+
+Otimista
+
+Para trabalhar com o lock otimista é necessário colocar um campo "private int versao" com a anotação @Version para indicar se a versão está atualizada.
+
+Uma solução otimista consiste em permitir que os conflitos ocorram, detectando-os e tomando medidas para corrigi-los. A ideia é que a aplicação/banco 
+nunca trave o acesso ao registro, sendo otimista, assumindo que isso é uma situação não tão frequente. Mas o que faremos quando acontece uma atualização 
+concorrente? Temos que prevenir a inconsistência dos dados, lançando uma exception ao cliente(Que pode ser resolvido de uma forma mais amigável).
+
+Resumo:
+
+Atualizações concorrentes podem acontecer dentro de uma aplicação web;
+Há duas abordagens para lidar com isso: Lock pessimista e otimista;
+Lock pessimista trava o registro impedindo acesso concorrente;
+O EntityManager possui um método lock para usar o Lock Pessimista;
+Lock otimista não trava o registro mas verifica se a atualização é possível;
+Lock otimista joga uma exceção no caso de alteração concorrente;
+Configurar o Lock otimista na entidade com @Version.
+
+
+Cache:
+
+Espaço intermediário utilizado para guardar os dados sem que haja necessidade 
+
+1° Nível - Os entitys managers já aplicacam o cache para sua transição.
+
+O que é o cache de primeiro nível e qual problema de utilizá-lo em uma aplicação Web ?
+
+O cache de primeiro nível é o cache que vem por padrão nos EntityManagers. 
+Ele nos impede de carregar duas vezes a mesma entidade do banco e, dessa forma, evita um acesso desnecessário.
+
+O problema de utilizarmos o cache de primeiro nível da nossa aplicação é que nós já configuramos 
+que seja criado um novo EntityManager a cada requisição. Ou seja, como cada requisição possuí o seu 
+próprio EntityManager e cada um destes o seu próprio cache, os dados do cache acabam se perdendo quando 
+a requisição termina, além de, não serem reaproveitados entre requisições.
+
+
+2° Nível - Problema de dados inconsistentes, e de sistemas externos acessando.
+
+Todos os EntityManagers compartilham, depois de habilitados no JpaConfigurator 
+(Poderia ser configurado pelo Persistence.xml caso usasse Hibernate puro) e indicado na classe
+com o @Cache, a partir disso já existe um camada a mais de consulta que é o cache de segundo nível
+onde todos o EM's acessam antes de ir no banco, onerando menos. 
+
+Alura Comments*
+
+O que precisamos é de um espaço de "cache" que seja compartilhado entre os vários EntityManagers 
+da nossa aplicação e que seja utilizado quando o cache de primeiro nível não detiver a informação desejada. 
+Esse espaço chamamos de cache de segundo nível.
+
+Em geral, lidar com um cache de segundo nível é bem mais complexo do que tratar com um de primeiro, 
+uma vez que a possibilidade de trabalhar com dados desatualizados (stale) é bem maior. Os objetos desse cache 
+são invalidados quando há alguma operação de escrita na entidade (como update). Se houver algum outro sistema 
+atualizando os dados no banco sem passar pela JPA seu uso pode se tornar inexecutável.
+
+
+Estrátegias de Cache:
+
+Link ref para ajudar: https://stackoverflow.com/questions/1837651/hibernate-cache-strategy
+
+Ao escrevermos Produto para anotar a entidade, recebemos um erro de compilação! Isso acontece porque, 
+ao usarmos dessa maneira, não especificamos qual a estratégia de concorrência que o cache deve adotar. 
+E essa é uma informação obrigatória ao usar @Cache!
+
+Existem algumas estratégias para se lidar com eventuais situações de concorrência pois, afinal, 
+quando trabalhamos com dados em sistemas distribuídos temos várias formas de lidar com a concorrência. 
+Um problema muito comum é manter a consistência do estado. Lembra-se que fizemos isso no capítulo de "Lock"? 
+Repare que se o produto não pudesse ser alterado não precisaríamos do lock.
+
+Se não fosse possível alterar o produto, poderíamos utilizar a estratégia READ_ONLY que abre mão dos locks 
+e sincronizações por não permitir alterações no estado do objeto. Essa é forma mais barata, 
+computacionalmente, de se trabalhar com cache de segundo nível.
+
+Em situações em que alterações de estado são necessárias e há grandes chances de que elas ocorram simultaneamente, 
+podemos adotar a estratégia READ_WRITE que consome muitos recursos para garantir que a última versão da 
+entidade no banco seja a mesma que está no cache.
+
+Porém, alterações ocorrendo ao mesmo tempo são incomuns. Ainda que não precisemos de todos os recursos 
+usados pela estratégia READ_WRITE, faz-se necessário modificar o estado da entidade. Nessa situação, 
+podemos usar a estratégia NON_STRICT_READ_WRITE ideal, ou seja, quando não há problemas em ler dados 
+inconsistentes caso hajam alterações simultâneas.
+
+Em ambientes JTA, por exemplo, os servidores de aplicação podem optar pela estratégia TRANSACTIONAL. 
+Em nosso projeto iremos utilizar a estratégia NON_STRICT_READ_WRITE
+
+UM POUCO MAIS SOBRE AS ESTRÁTEGIAS DE CACHE:
+
+A estratégia READ_ONLY deve ser utilizada quando uma entidade não deve ser modificada.
+
+A estratégia READ_WRITE deve ser utilizada quando uma entidade pode ser modificada e há 
+grandes chances que modificações em seu estado ocorram simultaneamente. Essa estratégia é a que mais consome recursos.
+
+A estratégia NONSTRICT_READ_WRITE deve ser utilizada quando uma entidade pode ser modificada, 
+mas é incomum que as alterações ocorram ao mesmo tempo. Ela consome menos recursos que a estratégia 
+READ_WRITE e é ideal quando não há problemas de dados inconsistentes serem lidos quando ocorrem alterações simultâneas.
+
+A estratégia TRANSACTIONAL deve ser utilizada em ambientes JTA, como por exemplo em servidores de aplicação. 
+Como utilizamos Tomcat com Spring (sem JTA) essa opção não funcionará.
+
+Interessante - Em qual caso os objetos do cache de segundo nível são invalidados ?
+
+O cache invalida seus dados quando ocorre alguma operação de escrita em uma entidade, 
+pois suas informações ficam desatualizados em relação ao banco de dados.
+
+Então, para manter a consistência dos dados, ele invalida os próprios dados.
+
+
+Cache de Queries:
+
+o provider EhCache não armazena o resultado da query por padrão.
+é necessário configurar uma dica (hint) para que seja habilitado.
+
+
+Existem infinatas possibilidades de configurações com o EhCache para isso 
+é necessário consultar a documentação:
+
+http://www.ehcache.org/documentation/2.8/configuration/configuration.html
+
+
+Resumo:
+
+Por padrão o Hibernate já utiliza um cache de entidades por EntityManager chamado de cache de primeiro nível;
+Usar cache melhora a performance já que reduz a comunicação remota;
+Em aplicações Web, o cache de primeiro nível não resolve nosso problema já que usamos vários EntityManagers;
+O cache de segundo nível resolve esse problema sendo compartilhado por diversos EntityManagers;
+Configurar o EhCache como provedor de cache de segundo nível;
+Cache de collections e de queries retornam apenas os ids dos relacionamentos.
+
+
+Hibernate Statistics:
+
+Link ref: http://blog.caelum.com.br/cacando-seus-gargalos-com-o-hibernate-statistics/

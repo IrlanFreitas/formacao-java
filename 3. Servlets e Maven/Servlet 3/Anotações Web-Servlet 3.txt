@@ -1,0 +1,576 @@
+Servlet Maior API Web Java
+
+Aula 1 - Servlet API e fundamentos da Web
+
+O tópico implica dizer que mesmo que não seja o mais usado quer dizer que as aplicações rodam encima dessa api,
+
+É explicado o porque de quando startar o servidor ele ir diretamente para o index.html, por com disso estar configurado no arquivo web.xml, que está dento da pasta WEB-INF, que não pode ser acessada pela URL e também contem as libs do projeto, dentro da pasta lib.
+
+
+Aula 2 - Post e os métodos HTTP
+
+Explicado a diferença do protocolo Get e Post
+
+Get, envia todos os dados pela URL e com isso sobre pois o servidor ou browser por cachear (Cortar os pedaços da url por conta do limite de tamanho) e com isso perder dados
+
+No Get são enviados:
+
+GET: /gerenciador/novaEmpresa?nome=Facebook HTTP 1.1
+HOST: localhost:8080
+
+Já o post não sofre com isso, digo o cash da url, pois os dados são enviados de forma ilimitada por novas linhas no protocolo
+
+Post:
+
+POST: /gerenciador/novaEmpresa HTTP 1.1
+HOST: localhost:8080
+
+Onde no corpo da requisição contém os parametros
+
+NOME: Facebook
+
+Sendo assim, mais dados poderiam ser enviados sem limites e nem risco de ser cacheado
+
+
+Aula 3 - Algumas características da web
+
+Explicando o processo de acesso a qualquer site, com a requisição a URL e com isso o navegação faz varias outras requisições (GET) seguidas a medida que é necessário obter mais recursos como arquivos, como imagens, icones, css.
+
+Navegador
+Solicita:
+www.alura.com.br
+
+Get----> / 
+<------	texto
+
+Get----> /icone.png
+<------ binario
+
+Get----> css
+<------ texto
+
+Get----> js
+<------ texto
+
+Lembrando que esse acesso é feito pelo metodo GET, que pode ser usado para enviar dados porem não deve, por conta da falta de segurança, então por conta disso deve ser sempre utilizado o metodo POST.
+
+Outro ponto destacado é a bom prática de não utilizar links para comandos como delete, ou impressão, pois os browser atuais usam algo como um plugin acelerador que quando se é solicitado um site, o browser, pré-carrega esses links e isso implica dizer que eles são acionados fazendo a ação mesmo que não se tenha clicado nesse link pois é utlizado o GET e o navegador confia nesse método e pode obter os dados sem medo, então não se deve utilizar o GET quando é da necessidade do desenvolvedor modificar dados no servidor.
+
+Um link não pode causar um efeito colateral no servidor que possa se arrepender.
+
+Alura:
+
+O método GET deve ser usado para buscar informações, para requisições que não trazem efeitos colaterais indesejáveis, para requisições que podem ser requisitadas diversas vezes sem causar nenhum dano.
+
+O método POST é considerado um método que efetua uma alteração de estado no servidor - por isso o navegador sempre pergunta se você tem certeza do que faz ao atualizar uma página que fez POST. Ele tem um número ilimitado de bytes que podem ser enviados em seu corpo - incluindo conteúdo binário como imagens - e por padrão não é cacheado (mas pode ser caso o servidor deseje).
+
+
+Aula 4 - Filtrando requisições
+
+É feito uma revisão no início do vídeo sobre os assuntos anteriores como: 
+
+já ser possível criar Servlets, toda classe que extends de HttpServlet.
+sobre tratar parametros da requisição do cliente, sobrepondo o método doGet para obter os dados e com isso pode ser devolvido com (request) req.getParameter("nome") para pegar qual foi o dado relacionado ao nome, ou poderia ser qualquer outro campo relacionado a um formulário.
+sobre devolver respostas ao cliente, com o (response) rep.getWriter(), que disponibiliza uma forma de escrever direto na página com um writeln("<html><body> Resposta </html></body>"), sendo que isso pode ser feito de outra forma.
+
+É dado um exemplo de Auditoria, onde todas as requisições serão tratadas e deve ser exibido na tela "O usuário está acessando : recurso" sempre o que o usuário está acessando sem que seja necessário copiar e colar código.
+
+Esse filtro de Auditória, deve exibir, o que o usuário está acessando e continuar a requisição, sendo que ele também poderia não deixar.
+
+Esse conceito de filtro é também o conceito de cadeia de execução, filtro --> filtro --> filtro --> servlet, é possivel que fique na frente de todas as servlets ou todas as páginas ou somente de uma, isso tudo é configuravél tudo isso pelo urlPaterns
+
+É conhecido aqui como Filter em outros Frameworks é conhecido como Interceptor, onde você adiciona uma caracterista a suas URI, como logar na aplicação.'
+
+Alura:
+
+Quando existem preocupações ou trechos de código que queremos executar em diversas URIs ou quando diversas Servlets são executadas, podemos criar um filtro, algo que fica antes de um grupo (ou uma única) servlet ou página html etc.
+O conceito de filtro é amplamente utilizado em aplicações web como uma maneira de adicionar características a parte da aplicação. Usando a API de servlets basta criar uma classe que implementa Filter e anotá-la com WebFilter. Em outras APIs é comum encontrar o nome de Interceptor ao invés de Filter para o mesmo conceito.
+
+
+Aula 5 - Mantendo informações relativas ao usuário com cookies
+
+É relembrado como foi a utilização dos filtros para auditória do site, passando o acesso da uri para o console. Só que falta nisso saber qual usuário está logado e usar essas informações do usuário logado para printar na tela, para isso é necessário uma Servlet, chamado /login, que vai tratar os dados pelos parametros de senha e login, String login = req.getParameter("login") e String senha = req.getParameter("senha"), que serão obtidos por meio de um formulário.
+
+Dentro disso entra a questão de como confirmar que usuário está realmente logado ? Se o protocoloco HTTP é stateless, que dizer, os dados não tem ligação com as requisições anteriores ? Marcando o usuário por meio de um cookie, que seria uma identificador dado depois do ato de login para que o usuário seja identificado na sessão.
+
+Esse cookie é utilizado em toda requisição, até ser fechado a janela por padrão, 
+
+
+Aula 6 - Manipulando cookies existentes
+
+É explicado o que na aula passado é chamado de cookie, como um marcador de usuário logado para que ele seja identificado.
+
+Quanto tempo dura um cookie ? Por padrão, numa aplicação java que usa um servidor com uma Api Servlet Container, esse tempo seria até o navegador do usuário ser fechado.
+
+Como configurar esse tempo ? O que pode ser feito para mudar o tempo de expiração de um cookie, é necessário mudar o tempo máximo que o cookie vai viver com o metodo cookie.setMaxAge(Segundos);
+
+Descoberto isso, como elimiar o cookie, é feito o logout, por um servlet --> form --> post.
+
+E com isso vem a dúvida, pois se o cliente está com o cookie, ele pode manipular como quiser e isso é um perigo.
+
+
+Aula 7 - Mantendo informações no lado do servidor com session
+
+É falado no início da aula sobre os cookies que permitem marcar o usuário com informações, deve ser um texto solto chave (usuario.logado) e valor (guilherme.silveira@alura.com.br), importante ter cuidado com o tamanho da informação, tem que ser string e tem problemas com a segurança pois o cliente pode mudar a chave do cookie.
+
+A mudança é necessário e para isso o ideal é que esse cookie fique no servidor para que o cliente não o mude.
+
+Para isso é necessário não mais utilizar a implementação do Cookie na unha o melhor é usar um HttpSession do retorno de request.getSession(), pois ao indicar a chave e o valor ele é responsavel por implementar o id seguro.
+
+Alura:
+
+Como vimos anteriormente, os cookies permitem que marquemos nossos clientes com determinadas informações. Mas tudo o que adicionamos em um cookie pode ser alterado pelo usuário final - um possível problema de segurança, e todos os dados são enviados pelo cliente ao servidor a cada nova requisição - o que pode ficar lento, portanto existem limites nos tamanhos dos cookies.
+
+
+Aula 8 -  Mais sobre servlets
+
+É falado sobre tudo o que foi visto até agora, e será feito uma modificação no construtor em um dos servlets para que seja entendido como realmente funciona a servlet e o seu tempo de vida.
+
+É explicado como funciona o Servlet pelos seus métodos principais, init - que é o método que inicializa a serlvet, destroy - metodo que finaliza a servlet, é compreendido que, a servlet é iniciada somente uma vez e o método fica sendo chamado quantas vezes for necessário na sessão.
+
+Quando se usar Servlet compreende que é utilizado uma instancia para todos os que acessam a servlet, e isso implica em quando há necessidade de dividir recurso como váriaveis membro, é necessário tomar cuidado pois como é somente uma instancia de servlet para todos os acessos, essa variavél ficará sendo utilizada por mais de um usuário mais de uma vez porem com o mesmo valor.
+
+Alura:
+O servlet contêiner instanciará por padrão uma única servlet, o que fica visível pois somente uma vez o construtor e o método init são invocados. Para forçar a invocação do método destroy devemos parar o servidor dando stop no servidor (não dê stop no console, que mata o servidor sem dar tempo de reação).
+
+
+Aula 9 - Redirecionamento no client e server side
+
+É falado sobre o que foi construido até agora, sistema de cadastro de empresas, loga o usuário, desloga, filtra as empresas, verifica o que o usuário está fazendo.
+
+Um ponto é colocado, organização de código, não pode haver código com lógica de negócio junto com a tela, o html.
+
+É falado sobre os redirecionamentos, que existem dois tipos, um feito no cliente onde ele sabe o que está acontecendo (feito com a resposta), e outro feito pelo servidor (feito com a requisição), onde o segundo o cliente não fica sabendo o que aconteceu e também caso seja dado um refresh na página o cliente acessará a primeira página de novo e não a página redirecionada.
+
+Alura:
+
+Note que até agora para cada uma das lógicas de nosso sistema, tivemos que criar o código que executa a lógica de negócios e a parte que renderiza uma página html. Mas isso significa que misturamos lógica (Java) com visualização (html). 
+
+Por exemplo, no caso do Logout, ao invés de removermos o atributo da HttpSession e escrevermos na saída do usuário, poderíamos somente executar a lógica de remoção:
+
+@Override
+protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+    HttpSession session = req.getSession();
+    session.removeAttribute("usuario.logado");
+
+}
+
+E depois dizer para o response que ele deve notificar o cliente para que ele seja redirecionado. Isto é, enviamos uma resposta que manda ele redirecionar para outro lugar, para nossa página logout.html:
+
+@Override
+protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+    HttpSession session = req.getSession();
+    session.removeAttribute("usuario.logado");
+
+    resp.sendRedirect("logout.html");
+}
+
+Precisamos criar a página logout.html no diretório WebContent. Lembrando que este diretório é a pasta raiz de nossa aplicação web:
+
+<html>
+<body>
+    Logout efetuado
+</body>
+</html>
+
+Existem portanto dois tipos de redirecionamento. O primeiro é feito no lado do cliente, através de um retorno de código diferente de 200 (ok), como o 302 (found) - que notifica o usuário final onde deve procurar o resultado de sua requisição. Outra maneira de redirecionar é fazer um server side redirect, onde o cliente nem fica sabendo o que aconteceu. Se ele fizer um refresh da página, passará pela lógica de negócios novamente.
+
+
+10 - Páginas dinâmicas
+
+Agora é modificado a página NovaEmpresa porem, como iremos passar os dados ? Da mesma maneira que o HttpSession guarda os dados do usuário na sessão o HttpServletRequest permite o armazenamento de valores que duram somente o ciclo de uma requisição - uma ida ao servido e volta ao cliente, incluindo redirecionamentos do tipo server side. Assim como no HttpSession, o método é o SetAttribute.
+
+Alura:
+
+Para isso vamos usar uma tecnologia que suporta receber variáveis e utilizá-las no meio de nossa página. A tecnologia padrão do Java é o JSP - Java Server Pages - e usaremos uma expressão bem simples para mostrar o nome:
+
+<html>
+<body>
+    Empresa ${nome} adicionada!
+</body>
+</html>
+
+Mas como passar a variável? Da mesma maneira que a HttpSession possui métodos para armazenar valores que duram durante toda a vida útil de uma sessão, a HttpServletRequest permite o armazenamento de valores que duram somente o ciclo de uma requisição - uma ida ao servidor e volta ao cliente, incluindo redirecionamentos do tipo server side, que estamos usando. Assim como no HttpSession, o método é o setAttribute:
+
+@Override
+protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+    String nome = req.getParameter("nome");
+
+    Empresa empresa = new Empresa(nome);
+    new EmpresaDAO().adiciona(empresa);
+
+    req.setAttribute("nome", nome);
+
+    RequestDispatcher dispatcher = req
+            .getRequestDispatcher("/WEB-INF/paginas/novaEmpresa.jsp");
+    dispatcher.forward(req, resp);
+
+}
+
+
+Aula 11 - Trabalhando com Taglibs
+
+Alura:
+
+Vamos pedir ajuda para uma biblioteca de tags (uma taglibrary ou taglib) que permite a execução de laços junto com as nossas expressões (expression language). Para isso, executaremos um forEach em todas as empresas, chamando a variável de empresa:
+
+<c:forEach var="empresa" items="${empresas}">
+    AQUI EU TENHO A EMPRESA
+</c:forEach>
+Para cada empresa, imprimimos uma tag li com seu id e nome:
+
+<c:forEach var="empresa" items="${empresas}">
+    <li>${empresa.getId()}: ${empresa.getNome()}</li>
+</c:forEach>
+
+Podemos simplificar nosso código ainda mais. A expression language do JSP permite que utilizemos somente id e nome quando desejamos chamar getters:
+
+<c:forEach var="empresa" items="${empresas}">
+    <li>${empresa.id}: ${empresa.nome}</li>
+</c:forEach>
+
+
+Aula 12 - Um padrão de controle
+
+Alura:
+
+Um padrão de controle
+
+Agora que já aprendemos a separar nossa lógica de negócios da view fica mais claro um padrão em todas as requisições que já atualizamos:
+O usuário executa a lógica de busca, redireciona para a página de resultado.
+O usuário executa a lógica de logout, redireciona para a página de resultado.
+O usuário executa a lógica de adicionar empresa, redireciona para a página de resultado.
+Se temos um padrão repetido, é um tipo de copy e paste que criamos sem querer. Vamos refatorar nosso código para removê-lo. Isso significa que teremos que criar alguma estrutura que executa a lógica e depois redireciona. Sempre.
+
+Poderíamos implementar uma servlet FazTudo, que mapeia diversas URIs:
+
+@WebServlet(urlPatterns = "/fazTudo")
+public class FazTudo extends HttpServlet {
+
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        // qual tarefa quero executar?
+        // para qual página desejo ir?
+    }
+}
+Mas ficamos com as duas questões em aberto. Primeiro qual tarefa desejo executar e segundo, para onde devo ir. Sabemos receber informações do usuário através de parâmetros do request, então vamos ler qual o nome da classe que desejamos instanciar:
+
+@Override
+protected void service(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+    // qual tarefa quero executar?
+    String tarefa = req.getParameter("tarefa");
+    // para qual página desejo ir?
+}
+Caso o usuário esqueça de passar a tarefa, jogaremos um erro para deixar isso claro:
+
+@Override
+protected void service(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+    // qual tarefa quero executar?
+    String tarefa = req.getParameter("tarefa");
+    if(tarefa == null)
+        throw new IllegalArgumentException("Você esqueceu de passar a tarefa");
+    // para qual página desejo ir?
+}
+Com o nome da tarefa sendo, por exemplo, BuscaEmpresa ou Logout, o nome da classe que desejamos executar é:
+
+@Override
+protected void service(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+    // qual tarefa quero executar?
+    String tarefa = req.getParameter("tarefa");
+    if(tarefa == null)
+        throw new IllegalArgumentException("Você esqueceu de passar a tarefa");
+
+    String nomeDaClasse = "br.com.alura.gerenciador.web." + tarefa;
+
+    // para qual página desejo ir?
+
+}
+Agora basta instanciar nossa classe:
+
+@Override
+protected void service(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+    // qual tarefa quero executar?
+    String tarefa = req.getParameter("tarefa");
+    if(tarefa == null)
+        throw new IllegalArgumentException("Você esqueceu de passar a tarefa");
+
+    String nomeDaClasse = "br.com.alura.gerenciador.web." + tarefa;
+    Tarefa instancia = new nomeDaClasse();
+
+    // para qual página desejo ir?
+}
+Mas isso não funciona, claro. Primeiro não existe uma classe ou interface chamada Tarefa, e segundo não é possível dar new em um objeto sem saber o nome dele em tempo de compilação. Quando compilamos a última linha, que instancia a tarefa, precisamos saber o nome dela... Não dá para saber o nome dela em tempo de execução.
+
+Aí podemos utilizar uma API de Java que permite a criação dinâmica de objetos, sem saber o tipo deles em tempo de compilação! Primeiro pegamos uma referência a classe:
+
+@Override
+protected void service(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+    // qual tarefa quero executar?
+    String tarefa = req.getParameter("tarefa");
+    if(tarefa == null)
+        throw new IllegalArgumentException("Você esqueceu de passar a tarefa");
+
+    String nomeDaClasse = "br.com.alura.gerenciador.web." + tarefa;
+    Class type = Class.forName(nomeDaClasse);
+
+    // para qual página desejo ir?
+}
+Agora instanciamos um objeto desse tipo usando o método newInstance, que invocará o construtor sem argumentos:
+
+@Override
+protected void service(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+    // qual tarefa quero executar?
+    String tarefa = req.getParameter("tarefa");
+    if(tarefa == null)
+        throw new IllegalArgumentException("Você esqueceu de passar a tarefa");
+
+    String nomeDaClasse = "br.com.alura.gerenciador.web." + tarefa;
+    Class type = Class.forName(nomeDaClasse);
+    Tarefa instancia = type.newInstance();
+
+    // para qual página desejo ir?
+}
+Perfeito! Com a API que utilizamos, de Reflection, podemos instanciar objetos dinamicamente. Se o usuário passar ?tarefa=BuscaEmpresa, a BuscaEmpresa será instanciada. Se ele passar Logout, o Logout será instanciado.
+
+Mas ainda não existe a interface Tarefa. Aliás, todas elas ainda herdam de HttpServlet! Não queremos mais isso, somos tarefas simples e não servlets complexas - exceto no caso do Login, que atacaremos já já.
+
+Para isso, criamos a interface Tarefa com o método executa, muito parecido com o método service:
+
+public interface Tarefa {
+
+    void executa(HttpServletRequest request, HttpServletResponse response);
+
+}
+Pronto. Agora que temos uma tarefa em nossas mãos, poderíamos executá-la:
+
+@Override
+protected void service(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+    // qual tarefa quero executar?
+    String tarefa = req.getParameter("tarefa");
+    if(tarefa == null)
+        throw new IllegalArgumentException("Você esqueceu de passar a tarefa");
+
+    String nomeDaClasse = "br.com.alura.gerenciador.web." + tarefa;
+    Class type = Class.forName(nomeDaClasse);
+    Tarefa instancia = type.newInstance();
+    instancia.executa(req, resp)
+
+    // para qual página desejo ir?
+}
+Mas o compilador reclama que o tipo instanciado não é do tipo Tarefa. Vamos forçar dizendo que ele é, usando cast:
+
+@Override
+protected void service(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+    // qual tarefa quero executar?
+    String tarefa = req.getParameter("tarefa");
+    if(tarefa == null)
+        throw new IllegalArgumentException("Você esqueceu de passar a tarefa");
+
+    String nomeDaClasse = "br.com.alura.gerenciador.web." + tarefa;
+    Class type = Class.forName(nomeDaClasse);
+    Tarefa instancia = (Tarefa) type.newInstance();
+    instancia.executa(req, resp)
+
+    // para qual página desejo ir?
+}
+Agora basta tratarmos todas as exceptions, como classes inexistentes, jogando ela novamente:
+
+@Override
+protected void service(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+    String tarefa = req.getParameter("tarefa");
+    if (tarefa == null)
+        throw new IllegalArgumentException(
+                "Você esqueceu de passar a tarefa");
+    try {
+        String nomeDaClasse = "br.com.alura.gerenciador.web." + tarefa;
+        Class type = Class.forName(nomeDaClasse);
+        Tarefa instancia = (Tarefa) type.newInstance();
+        instancia.executa(req, resp);
+
+        // para qual página desejo ir?
+
+    } catch (Exception e) {
+        throw new ServletException(e);
+    }
+}
+Ainda falta responder a pergunta: para qual página desejamos ir? Em nosso projeto, toda vez que executamos uma lógica vamos para algum lugar, portanto sempre temos um RequestDispatcher. Ao invés de deixar esse código espalhado, podemos deixar em nosso FazTudo:
+
+@Override
+protected void service(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+    String tarefa = req.getParameter("tarefa");
+    if (tarefa == null)
+        throw new IllegalArgumentException(
+                "Você esqueceu de passar a tarefa");
+    try {
+        String nomeDaClasse = "br.com.alura.gerenciador.web." + tarefa;
+        Class type = Class.forName(nomeDaClasse);
+        Tarefa instancia = (Tarefa) type.newInstance();
+        instancia.executa(req, resp);
+
+        String pagina = ???
+
+        RequestDispatcher requestDispatcher = req
+                .getRequestDispatcher(pagina);
+        requestDispatcher.forward(req, resp);
+    } catch (Exception e) {
+        throw new ServletException(e);
+    }
+}
+Mas qual é a página? Nós não sabemos, mas o método que é executado sabe. Então vamos pedir para ele retornar a página para nós:
+
+public interface Tarefa {
+    String executa(HttpServletRequest request, HttpServletResponse response);
+}
+E basta usarmos o resultado desse método para redirecionar:
+
+@Override
+protected void service(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+    String tarefa = req.getParameter("tarefa");
+    if (tarefa == null)
+        throw new IllegalArgumentException(
+                "Você esqueceu de passar a tarefa");
+    try {
+        String nomeDaClasse = "br.com.alura.gerenciador.web." + tarefa;
+        Class type = Class.forName(nomeDaClasse);
+        Tarefa instancia = (Tarefa) type.newInstance();
+        String pagina = instancia.executa(req, resp);
+
+        RequestDispatcher requestDispatcher = req
+                .getRequestDispatcher(pagina);
+        requestDispatcher.forward(req, resp);
+    } catch (Exception e) {
+        throw new ServletException(e);
+    }
+}
+Agora devemos atualizar nossas três servlets para utilizar essa interface, começamos com Logout, implementando o único método necessário e devolvendo a nossa página html:
+
+public class Logout implements Tarefa {
+
+    @Override
+    public String executa(HttpServletRequest request,
+            HttpServletResponse response) {
+
+        HttpSession session = request.getSession();
+        session.removeAttribute("usuarioLogado");
+
+        return "/WEB-INF/paginas/logout.html";
+
+    }
+
+}
+Com isso alteramos nossa URI para /fazTudo?tarefa=Logout. Alteramos o link do formulário,na página index.jsp:
+
+<form action="fazTudo?tarefa=Logout" method="post">
+    <input type="submit" value="Logout" />
+</form>
+A próxima classe é a de NovaEmpresa, onde novamente trocamos o método e usamos o return:
+
+public class NovaEmpresa implements Tarefa {
+
+    @Override
+    public String executa(HttpServletRequest request,
+            HttpServletResponse response) {
+
+        String nome = request.getParameter("nome");
+
+        Empresa empresa = new Empresa(nome);
+        new EmpresaDAO().adiciona(empresa);
+
+        request.setAttribute("nome", nome);
+
+        return "/WEB-INF/paginas/novaEmpresa.jsp";
+
+    }
+
+}
+Alteramos o link do formulário index.jsp:
+
+<form action="fazTudo?tarefa=NovaEmpresa" method="post">
+    Nome: <input type="text" name="nome" /><br />
+    <input type="submit" value="Enviar" />
+</form>
+Por fim, passamos pela classe de BuscaEmpresa com o mesmo padrão. Nesse caso não temos mais o método init e destroy, que devemos remover. Mas deixamos o construtor pois ele será instanciado a cada nova requisição:
+
+public class BuscaEmpresa implements Tarefa {
+
+    public BuscaEmpresa() {
+        System.out.println("Instanciando uma Servlet do tipo BuscaEmpresa "
+                + this);
+    }
+
+    @Override
+    public String executa(HttpServletRequest request,
+            HttpServletResponse response) {
+
+        String filtro = request.getParameter("filtro");
+        Collection<Empresa> empresas = new EmpresaDAO()
+                .buscaPorSimilaridade(filtro);
+
+        request.setAttribute("empresas", empresas);
+
+        return "/WEB-INF/paginas/buscaEmpresa.jsp";
+
+    }
+
+}
+Lembre-se que para acessar a busca devemos agora invocar http://localhost:8080/gerenciador/fazTudo?tarefa=BuscaEmpresa
+
+Iremos mudar todas as classes de lógicas para implementar a interface Tarefa.
+
+Agora sim, estamos usando nosso fazTudo, sem ter que se preocupar em extender classes do tipo HttpServlet, implementar métodos específicos de doGet ou doPost, ou ainda mapear as URIs... Todas já estão mapeadas.
+
+
+Aula 13 - Model View Controller
+
+Alura:
+
+Um controlador que fica na frente de nossa aplicação, cuidando do que deve ser executado. Diversas lógicas que modelam nosso negócio. E diversas views que são ativadas para definir a visualização dos usuários. Temos uma camada de Model, uma de View e uma de Controller. Daí vem o nome deste padrão de desenvolvimento, deste design pattern, o Model View Controller.
+
+É possível implementar esse padrão de diversas maneiras, assim como existem muitas variações do mesmo. Agora que já conhecemos como a web funciona, com suas limitações e vantagens de ser baseada em request, response, de não manter estado e ter que trabalhar com Cookies e Sessions, entendemos melhor como as bibliotecas e frameworks funcionam por trás e nos ajudam a resolver alguns problemas.
+
+Frameworks em Java como o Vraptor, o Spring MVC ou em Ruby como o Rails - todos com cursos disponíveis no Alura - permitem que o desenvolvedor foque em criar suas lógicas e visualizações, já fornecendo uma camada de controller que disponibiliza as mais variadas funcionalidades, acelerando o tempo de desenvolvimento.
+
+Não importa o framework que você escolher, é vital entender como a web funciona e - no caso de Java - como a API de servlet é por trás. Dessa maneira sabemos que tipo de implementações devemos evitar como por exemplo sessões que possuem muitos objetos ou problemas de segurança em cookies. Tudo isso é resultado da Web e aparece em todos os frameworks de uma maneira ou de outra: sabendo como funcionam podemos evitar cair nessas armadilhas.
+
+Dar um fork no projeto - https://github.com/alura-cursos/servlet-3-e-fundamentos-web
+
+
+
+
+
+
+
+
+
+
+
