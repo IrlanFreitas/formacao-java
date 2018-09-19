@@ -30,7 +30,7 @@ Futuramente será descrito todos os cursos e passo-a-passo do que está sendo fe
 - [ ] **Java parte 7: Trabalhando com java.io**
 - [ ] Design Patterns no Java SE: o Template Method
 - [ ] Internacionalização no código Java
-- [ ] **Java: Dominando as Collections**
+- [x] **Java: Dominando as Collections**
 - [ ] Conheça a nova API de datas do Java 8
 - [ ] Conheça as novidades do Java 9
 - [ ] O mínimo que você deve saber de Java 10
