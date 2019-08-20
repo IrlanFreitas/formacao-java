@@ -13,7 +13,7 @@ Futuramente será descrito todos os cursos e passo-a-passo do que está sendo fe
 ## 1. Java e Orientação a Objetos
 
 - [x] **Java parte 1: Primeiros passos**
-- [ ] **Java parte 2: Introdução à Orientação a Objetos**
+- [x] **Java parte 2: Introdução à Orientação a Objetos**
 - [ ] **Java parte 3: Entendendo herança e interface**
 - [ ] Como não aprender Java e Orientação a Objetos: getters e setters
 - [ ] Revisitando a Orientação a Objetos: encapsulamento no Java
