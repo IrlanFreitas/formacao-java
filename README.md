@@ -14,26 +14,26 @@ Futuramente será descrito todos os cursos e passo-a-passo do que está sendo fe
 
 - [x] **Java parte 1: Primeiros passos**
 - [x] **Java parte 2: Introdução à Orientação a Objetos**
-- [ ] **Java parte 3: Entendendo herança e interface**
-- [ ] Como não aprender Java e Orientação a Objetos: getters e setters
-- [ ] Revisitando a Orientação a Objetos: encapsulamento no Java
-- [ ] **Java parte 4: Entendendo exceções**
+- [x] **Java parte 3: Entendendo herança e interface**
+- [x] Como não aprender Java e Orientação a Objetos: getters e setters
+- [x] Revisitando a Orientação a Objetos: encapsulamento no Java
+- [x] **Java parte 4: Entendendo exceções**
 
 ## 2. Bibliotecas Java
 
-- [ ] **Java parte 5: Pacotes e java.lang**
-- [ ] Pegamento partes de um texto no java
-- [ ] Trocando caracteres de uma String no Java
-- [ ] **Java parte 6: Conhecendo o java.util**
-- [ ] Diferença ente int e integer em Java
-- [ ] Arredondando números no Java
-- [ ] **Java parte 7: Trabalhando com java.io**
-- [ ] Design Patterns no Java SE: o Template Method
-- [ ] Internacionalização no código Java
+- [x] **Java parte 5: Pacotes e java.lang**
+- [x] Pegamento partes de um texto no java
+- [x] Trocando caracteres de uma String no Java
+- [x] **Java parte 6: Conhecendo o java.util**
+- [x] Diferença ente int e integer em Java
+- [x] Arredondando números no Java
+- [x] **Java parte 7: Trabalhando com java.io**
+- [x] Design Patterns no Java SE: o Template Method
+- [x] Internacionalização no código Java
 - [x] **Java: Dominando as Collections**
-- [ ] Conheça a nova API de datas do Java 8
-- [ ] Conheça as novidades do Java 9
-- [ ] O mínimo que você deve saber de Java 10
+- [x] Conheça a nova API de datas do Java 8
+- [x] Conheça as novidades do Java 9
+- [x] O mínimo que você deve saber de Java 10
 
 ## 3. Servlets e Maven
 
