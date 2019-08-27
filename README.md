@@ -45,11 +45,11 @@ Futuramente será descrito todos os cursos e passo-a-passo do que está sendo fe
 ## 4. Banco de Dados
 
 - [x] **Java e JPA: Persista seus objetos com JPA2 e Hibernate**
-- [ ] Entidades Managed, Transient e Detached no Hibernate e JPA
-- [ ] JPA com Hibernate: Herança e Mapeamentos
+- [x] Entidades Managed, Transient e Detached no Hibernate e JPA
+- [x] JPA com Hibernate: Herança e Mapeamentos
 - [x] **Java e JPA: Otimizações com JPA2 e Hibernate**
-- [ ] Entendendo o Lazy e o Eaged Load da JPA
-- [ ] Os 7 hábitos dos desenvolvedores Hibernate e JPA altamente eficazes 
+- [x] Entendendo o Lazy e o Eaged Load da JPA
+- [x] Os 7 hábitos dos desenvolvedores Hibernate e JPA altamente eficazes 
 
 ## 5. Spring MVC
 
