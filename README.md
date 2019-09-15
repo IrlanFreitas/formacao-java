@@ -37,9 +37,11 @@ Futuramente será descrito todos os cursos e passo-a-passo do que está sendo fe
 
 ## 3. Servlets e Maven
 
-- [x] **Servlets: Fundamentos da Web**
+- [x] **Maven: Build do zero a web**
+- [x] **Servlets Parte 1: Fundamentos da programação web java**
+- [ ] **Servlets Parte 2: Autenticação, autorização e o padrão MVC**
 - [ ] Receba notificações da api de Servlet via Listeners
-- [ ] **Maven: Build do zero a web**
+
  
 
 ## 4. Banco de Dados
