@@ -1,27 +1,19 @@
-package br.com.alura.gerenciador.servlet;
+package br.com.alura.gerenciador.acao;
 
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.alura.gerenciador.dao.Banco;
+import br.com.alura.gerenciador.interfaces.Acao;
 import br.com.alura.gerenciador.model.Empresa;
 
-/**
- * Servlet implementation class ExibirEmpresaServlet
- */
-//@WebServlet("/exibirEmpresa")
-@Deprecated
-public class ExibirEmpresaServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class ExibirEmpresa implements Acao {
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+	public void executa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Integer id = Integer.valueOf(req.getParameter("id"));
 
 		Banco banco = new Banco();

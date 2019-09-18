@@ -17,7 +17,7 @@
 	<!-- o c:url pega o contexto atual do projeto, podendo ser
 		qualquer um e mesmo assim funciona, como uma variável
 		de ambiente -->
-	<form action="<c:url value="/editarEmpresa"/>" method="post">
+	<form action="<c:url value="/entrada?acao=EditarEmpresa"/>" method="post">
 		
 		<input hidden="true" name="id" value="${empresa.id}"  >
 		Nome: <input type="text" name="nome" value="${empresa.nome}" >

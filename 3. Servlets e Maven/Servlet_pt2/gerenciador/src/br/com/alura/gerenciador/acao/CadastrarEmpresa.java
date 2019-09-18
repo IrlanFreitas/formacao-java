@@ -1,4 +1,4 @@
-package br.com.alura.gerenciador.servlet;
+package br.com.alura.gerenciador.acao;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -6,27 +6,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.alura.gerenciador.dao.Banco;
+import br.com.alura.gerenciador.interfaces.Acao;
 import br.com.alura.gerenciador.model.Empresa;
 
-/**
- * Servlet implementation class NovaEmpresaServlet
- */
-//@WebServlet("/novaEmpresa")
-@Deprecated
-public class NovaEmpresaServlet extends HttpServlet {
-	
-	private static final long serialVersionUID = 1L;
-	
+public class CadastrarEmpresa implements Acao {
 
-	
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+	public void executa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("Cadastrando nova empresa");
 		
 		String nome = req.getParameter("nome");
@@ -48,13 +38,8 @@ public class NovaEmpresaServlet extends HttpServlet {
 		
 //		Usando ClientSideRedirect
 		req.setAttribute("empresa", empresa.getNome());
-		resp.sendRedirect("listarEmpresas");
+		resp.sendRedirect("entrada?acao=ListarEmpresas");
 				
-		// Não usar mais ServerSideRedirect
-//		RequestDispatcher dispatcher = req.getRequestDispatcher("/listarEmpresas");
-//		req.setAttribute("empresa", empresa.getNome());
-//		dispatcher.forward(req, resp);
-
 	}
 
 }

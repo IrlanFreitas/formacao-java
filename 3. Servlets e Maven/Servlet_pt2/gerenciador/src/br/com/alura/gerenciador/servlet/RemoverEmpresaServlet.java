@@ -13,7 +13,8 @@ import br.com.alura.gerenciador.dao.Banco;
 /**
  * Servlet implementation class RemoverEmpresa
  */
-@WebServlet("/removerEmpresa")
+//@WebServlet("/removerEmpresa")
+@Deprecated
 public class RemoverEmpresaServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;

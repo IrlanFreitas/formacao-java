@@ -17,7 +17,8 @@ import br.com.alura.gerenciador.model.Empresa;
 /**
  * Servlet implementation class EditarEmpresaServlet
  */
-@WebServlet("/editarEmpresa")
+//@WebServlet("/editarEmpresa")
+@Deprecated
 public class EditarEmpresaServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

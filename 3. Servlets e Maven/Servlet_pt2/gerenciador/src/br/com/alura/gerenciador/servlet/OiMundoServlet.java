@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 // Criando a rota/nome do servlet
 // para ser acessado externamente
-@WebServlet(urlPatterns = "/oi")
+//@WebServlet(urlPatterns = "/oi")
+@Deprecated
 public class OiMundoServlet extends HttpServlet {
 	
 	

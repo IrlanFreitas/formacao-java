@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import br.com.alura.gerenciador.dao.Banco;
 
 
-@WebServlet("/listarEmpresas")
-public class ListarEmpresas extends HttpServlet {
+//@WebServlet("/listarEmpresas")
+@Deprecated
+public class ListarEmpresasServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
        
