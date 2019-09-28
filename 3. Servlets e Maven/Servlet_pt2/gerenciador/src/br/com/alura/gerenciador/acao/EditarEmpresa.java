@@ -16,7 +16,7 @@ import br.com.alura.gerenciador.model.Empresa;
 public class EditarEmpresa implements Acao {
 
 	@Override
-	public void executa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public String executa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		Integer id = Integer.valueOf(req.getParameter("id"));
 		
@@ -36,7 +36,9 @@ public class EditarEmpresa implements Acao {
 		empresa.setNome(nome);
 		empresa.setDataAbertura(dataAbertura);
 		
-		resp.sendRedirect("entrada?acao=ListarEmpresas");
+//		resp.sendRedirect("entrada?acao=ListarEmpresas");
+		
+		return "redirect:entrada?acao=ListarEmpresas";
 
 	}
 

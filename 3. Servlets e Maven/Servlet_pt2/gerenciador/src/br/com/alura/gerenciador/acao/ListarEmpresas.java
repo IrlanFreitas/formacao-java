@@ -10,11 +10,15 @@ import br.com.alura.gerenciador.dao.Banco;
 import br.com.alura.gerenciador.interfaces.Acao;
 
 public class ListarEmpresas implements Acao {
-	
-	public void executa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	public String executa(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		Banco banco = new Banco();
 		request.setAttribute("empresas", banco.getEmpresas());
-		request.getRequestDispatcher("/listarEmpresas.jsp").forward(request, response);
+//		request.getRequestDispatcher("/listarEmpresas.jsp").forward(request, response);
+		return "forward:listarEmpresas.jsp";
+
 	}
-	
+
 }

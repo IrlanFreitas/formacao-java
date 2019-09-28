@@ -16,7 +16,7 @@ import br.com.alura.gerenciador.model.Empresa;
 public class CadastrarEmpresa implements Acao {
 
 	@Override
-	public void executa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public String executa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("Cadastrando nova empresa");
 		
 		String nome = req.getParameter("nome");
@@ -38,7 +38,10 @@ public class CadastrarEmpresa implements Acao {
 		
 //		Usando ClientSideRedirect
 		req.setAttribute("empresa", empresa.getNome());
-		resp.sendRedirect("entrada?acao=ListarEmpresas");
+//		resp.sendRedirect("entrada?acao=ListarEmpresas");
+		
+		return "redirect:entrada?acao=ListarEmpresas";
+		
 				
 	}
 

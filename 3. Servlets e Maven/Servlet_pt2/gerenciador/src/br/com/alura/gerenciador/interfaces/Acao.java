@@ -8,6 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface Acao {
 	
-	public void executa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
+	String executa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
 	
 }

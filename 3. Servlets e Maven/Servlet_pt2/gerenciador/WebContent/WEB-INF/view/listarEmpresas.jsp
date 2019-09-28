@@ -12,14 +12,17 @@
 <title>Listagem de Empresas Cadastradas</title>
 </head>
 <body>
-
+	
+	
+	<c:import url="logout-parcial.jsp" />
+	
 	<c:if test="${not empty empresa}">
 
 		Empresa ${empresa} cadastrada com sucesso!
 		
 	</c:if>
 	<br> Adicionar Empresa:
-		<a href="/gerenciador/formNovaEmpresa.jsp">Adicionar</a>
+		<a href="/gerenciador/entrada?acao=CadastrarEmpresaForm">Adicionar</a>
 	<br>
 	
 	<br> Lista de Empresas:

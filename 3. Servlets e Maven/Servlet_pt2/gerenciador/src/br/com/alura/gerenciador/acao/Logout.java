@@ -5,20 +5,22 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import br.com.alura.gerenciador.dao.Banco;
 import br.com.alura.gerenciador.interfaces.Acao;
 
-public class RemoverEmpresa implements Acao {
+public class Logout implements Acao {
 
 	@Override
 	public String executa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Integer id = Integer.parseInt( req.getParameter("id") );
-		Banco banco = new Banco();
-		banco.remover(id);
+		HttpSession session = req.getSession();
 		
-		return "redirect:entrada?acao=ListarEmpresas";
-
+//		session.removeAttribute("usuarioLogado");
+//      Melhor do que ficar removendo os atributos
+//		pois os cookies continuavam.
+		
+		session.invalidate();
+		return "redirect:entrada?acao=LoginForm";
 	}
 
 }
