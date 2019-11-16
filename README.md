@@ -61,7 +61,3 @@ Futuramente será descrito todos os cursos e passo-a-passo do que está sendo fe
 - [ ] **Spring MCV II: Integração, cache, segurança e templates**
 - [ ] Agendando tarefas com Scheduled do Spring
 - [ ] [Alura Live #61 - Programação reativa com Spring 5](https://www.facebook.com/AluraCursosOnline/videos/1518267154954523/)
-
-## 6. Projeto
-
-
