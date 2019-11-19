@@ -39,7 +39,7 @@ Futuramente será descrito todos os cursos e passo-a-passo do que está sendo fe
 
 - [x] **Maven: Build do zero a web**
 - [x] **Servlets Parte 1: Fundamentos da programação web java**
-- [ ] **Servlets Parte 2: Autenticação, autorização e o padrão MVC**
+- [x] **Servlets Parte 2: Autenticação, autorização e o padrão MVC**
 - [ ] Receba notificações da api de Servlet via Listeners
 
  
@@ -55,13 +55,9 @@ Futuramente será descrito todos os cursos e passo-a-passo do que está sendo fe
 
 ## 5. Spring MVC
 
-- [ ] [Spring Framework - Hipsters #87](https://hipsters.tech/spring-framework-hipsters-87/)
-- [ ] **Spring MVC I: Criando aplicações web**
+- [x] [Spring Framework - Hipsters #87](https://hipsters.tech/spring-framework-hipsters-87/)
+- [x] **Spring MVC I: Criando aplicações web**
 - [ ] Erros com JAXB no Java 9+
 - [ ] **Spring MCV II: Integração, cache, segurança e templates**
 - [ ] Agendando tarefas com Scheduled do Spring
 - [ ] [Alura Live #61 - Programação reativa com Spring 5](https://www.facebook.com/AluraCursosOnline/videos/1518267154954523/)
-
-## 6. Projeto
-
-
