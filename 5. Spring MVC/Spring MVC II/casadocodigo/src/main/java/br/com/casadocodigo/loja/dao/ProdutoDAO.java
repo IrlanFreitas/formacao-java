@@ -1,5 +1,6 @@
 package br.com.casadocodigo.loja.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.casadocodigo.loja.models.Produto;
+import br.com.casadocodigo.loja.models.TipoPreco;
 
 //Diferente do @Controller essa anotação serve para o que o spring conheça
 //o objeto só que entendendo que é para acesso a dados
@@ -28,7 +30,7 @@ public class ProdutoDAO {
 	}
 	
 	public List<Produto> listar() {
-		return manager.createQuery("Select t from Produto t", Produto.class).getResultList();
+		return manager.createQuery("select distinct(p) from Produto p join fetch p.precos", Produto.class).getResultList();
 	}
 	
 	public Produto obterPorId(Integer id) {
@@ -40,5 +42,11 @@ public class ProdutoDAO {
 		
 		return query.getSingleResult();
 		
+	}
+	
+	public BigDecimal somaPrecosPorTipo(TipoPreco tipoPreco){
+	    TypedQuery<BigDecimal> query = manager.createQuery("select sum(preco.valor) from Produto p join p.precos preco where preco.tipo = :tipoPreco", BigDecimal.class);
+	    query.setParameter("tipoPreco", tipoPreco);
+	    return query.getSingleResult();
 	}
 }
