@@ -13,20 +13,23 @@ import br.com.casadocodigo.loja.models.Usuario;
 
 @Repository
 public class UsuarioDAO implements UserDetailsService {
-	
+
 	@PersistenceContext
 	private EntityManager manager;
-	
+
 	public Usuario loadUserByUsername(String email) throws UsernameNotFoundException {
 		List<Usuario> usuarios = manager.createQuery("Select u from Usuario u where u.email = :email", Usuario.class)
-				.setParameter("email", email)
-				.getResultList();
-		
-		if(usuarios.isEmpty()) {
-			throw new UsernameNotFoundException("Usuário "+ email + " não foi encontrado");
+				.setParameter("email", email).getResultList();
+
+		if (usuarios.isEmpty()) {
+			throw new UsernameNotFoundException("Usuário " + email + " não foi encontrado");
 		}
-		
+
 		return usuarios.get(0);
+	}
+
+	public void gravar(Usuario usuario) {
+		manager.persist(usuario);
 	}
 
 }

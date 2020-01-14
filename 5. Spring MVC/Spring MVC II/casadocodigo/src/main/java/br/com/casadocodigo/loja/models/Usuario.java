@@ -20,7 +20,7 @@ public class Usuario implements UserDetails {
 	@Id
 	private String email;
 	private String senha;
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.EAGER, ascade=CascadeType.PERSIST)
 	private List<Role> roles = new ArrayList<Role>();
 	private String nome;
 	
